@@ -5,6 +5,7 @@ input.onButtonPressed(Button.A, function () {
 function checkForApple () {
     if (x == apple_x && y == apple_y) {
         points += 1
+        timer = time
         placeApple()
     }
 }
@@ -31,7 +32,9 @@ function read_x () {
     }
 }
 function setup () {
-    moves = 25
+    time = 15
+    timer = time
+    moves = 50
     points = 0
     x = 2
     y = 2
@@ -53,6 +56,8 @@ function read_y () {
     }
 }
 let moves = 0
+let time = 0
+let timer = 0
 let points = 0
 let apple_y = 0
 let y = 0
@@ -66,6 +71,12 @@ basic.forever(function () {
         read_y()
         showApple()
         checkForApple()
+        timer += -1
+        if (timer == 0) {
+            basic.clearScreen()
+            placeApple()
+            timer = time
+        }
         basic.pause(200)
     }
     basic.showNumber(points)
