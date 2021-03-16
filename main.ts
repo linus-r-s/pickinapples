@@ -42,15 +42,15 @@ function setup () {
 }
 function read_y () {
     if (pins.analogReadPin(AnalogPin.P1) < 350) {
-        if (y > 0) {
-            basic.clearScreen()
-            y += -1
-            moves += -1
-        }
-    } else if (pins.analogReadPin(AnalogPin.P1) > 1000) {
         if (y < 4) {
             basic.clearScreen()
             y += 1
+            moves += -1
+        }
+    } else if (pins.analogReadPin(AnalogPin.P1) > 1000) {
+        if (y > 0) {
+            basic.clearScreen()
+            y += -1
             moves += -1
         }
     }
