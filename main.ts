@@ -6,6 +6,7 @@ function checkForApple () {
     if (x == apple_x && y == apple_y) {
         points += 1
         timer = time
+        music.playTone(523, music.beat(BeatFraction.Eighth))
         placeApple()
     }
 }
@@ -64,6 +65,7 @@ let y = 0
 let apple_x = 0
 let x = 0
 setup()
+pins.setAudioPin(AnalogPin.P2)
 basic.forever(function () {
     while (moves > 0) {
         led.plot(x, y)
@@ -74,6 +76,7 @@ basic.forever(function () {
         timer += -1
         if (timer == 0) {
             basic.clearScreen()
+            music.playTone(330, music.beat(BeatFraction.Eighth))
             placeApple()
             timer = time
         }
