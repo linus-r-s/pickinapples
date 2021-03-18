@@ -3,31 +3,26 @@ input.onButtonPressed(Button.A, function () {
     setup()
 })
 function checkForApple () {
-    if (x == apple_x && y == apple_y) {
+    if (player.isTouching(apple)) {
         points += 1
         timer = time
         music.playTone(523, music.beat(BeatFraction.Eighth))
         placeApple()
     }
 }
-function showApple () {
-    led.plot(apple_x, apple_y)
-}
 function placeApple () {
-    apple_x = randint(0, 4)
-    apple_y = randint(0, 4)
+    apple.setX(randint(0, 4))
+    apple.setY(randint(0, 4))
 }
 function read_x () {
-    if (pins.analogReadPin(AnalogPin.P0) < 350) {
-        if (x < 4) {
-            basic.clearScreen()
-            x += 1
+    if (microboy.readJoystick(Axis.X) < 350) {
+        if (player.get(LedSpriteProperty.X) < 4) {
+            player.changeXBy(1)
             moves += -1
         }
-    } else if (pins.analogReadPin(AnalogPin.P0) > 1000) {
-        if (x > 0) {
-            basic.clearScreen()
-            x += -1
+    } else if (microboy.readJoystick(Axis.X) > 1000) {
+        if (player.get(LedSpriteProperty.X) > 0) {
+            player.changeXBy(-1)
             moves += -1
         }
     }
@@ -37,21 +32,17 @@ function setup () {
     timer = time
     moves = 50
     points = 0
-    x = 2
-    y = 2
     placeApple()
 }
 function read_y () {
-    if (pins.analogReadPin(AnalogPin.P1) < 350) {
-        if (y < 4) {
-            basic.clearScreen()
-            y += 1
+    if (microboy.readJoystick(Axis.Y) < 350) {
+        if (player.get(LedSpriteProperty.Y) < 4) {
+            player.changeYBy(1)
             moves += -1
         }
-    } else if (pins.analogReadPin(AnalogPin.P1) > 1000) {
-        if (y > 0) {
-            basic.clearScreen()
-            y += -1
+    } else if (microboy.readJoystick(Axis.Y) > 1000) {
+        if (player.get(LedSpriteProperty.Y) > 0) {
+            player.changeYBy(-1)
             moves += -1
         }
     }
@@ -60,18 +51,14 @@ let moves = 0
 let time = 0
 let timer = 0
 let points = 0
-let apple_y = 0
-let y = 0
-let apple_x = 0
-let x = 0
+let player = game.createSprite(2, 2)
+let apple = game.createSprite(randint(0, 4), randint(0, 4))
 setup()
 pins.setAudioPin(AnalogPin.P2)
 basic.forever(function () {
     while (moves > 0) {
-        led.plot(x, y)
         read_x()
         read_y()
-        showApple()
         checkForApple()
         timer += -1
         if (timer == 0) {
